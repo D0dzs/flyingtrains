@@ -1,4 +1,4 @@
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
 
 import type { Metadata } from "next";
 import TSQueryProvider from "./components/Providers/TSQueryProvider";
@@ -19,10 +19,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`antialiased dark select-none overflow-hidden`}>
-        <Analytics/>
         <TSQueryProvider>
           <SidebarProvider>
-            <main className="w-full h-screen relative">{children}</main>
+            <main className="w-full h-screen relative">
+              {children}
+              <Analytics />
+            </main>
           </SidebarProvider>
         </TSQueryProvider>
       </body>

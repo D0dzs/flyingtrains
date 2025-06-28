@@ -90,7 +90,7 @@ const LeafletMap = ({
       <ResizeHandler />
       <GeoJSON data={mRD} style={{ color: "#6f6f6f", weight: 2 }} />
       <GeoJSON data={sRD} style={{ color: "#3f3f3f", weight: 1.25 }} />
-      <GeoJSON data={boundaryData} style={{ fill: false, color: "#7f0000" }} />
+      <GeoJSON data={boundaryData} style={{ fill: false, color: "#cf0000" }} />
       {/* Maptiles */}
       <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
       s{/* Trains and their positions. */}

@@ -56,6 +56,7 @@ export function AppSidebar({
                 {lastUpdated > 0 ? (
                   <p>
                     {new Date(lastUpdated).toLocaleString("en-US", {
+                      hour12: false,
                       month: "short",
                       day: "2-digit",
                       hour: "2-digit",
@@ -74,15 +75,16 @@ export function AppSidebar({
           <div className="flex flex-col">
             <div className="flex flex-row gap-2">
               <RssIcon size={24} className="stroke-red-400" />
-              <span>{lastUpdated > 0 ? <p>Next update at:</p> : "N/A"}</span>
+              <span>{lastUpdated > 0 ? <p>Next update at</p> : "N/A"}</span>
             </div>
             <p className="text-xs text-right text-gray-300 italic">
-              {new Date(lastUpdated + 120000).toLocaleString("en-US", {
+              {new Date(lastUpdated + 120000).getTime() ? new Date(lastUpdated + 120000).toLocaleString("en-US", {
+                hour12: false,
                 month: "short",
                 day: "2-digit",
                 hour: "2-digit",
                 minute: "2-digit",
-              })}
+              }) : <span className="text-muted-foreground italic">Loading...</span>}
             </p>
           </div>
           <div className="flex flex-row gap-2">

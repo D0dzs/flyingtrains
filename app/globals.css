@@ -170,7 +170,7 @@
 }
 
 p {
-  @apply p-0! m-0!
+  @apply p-0! m-0!;
 }
 
 .leaflet-container {
@@ -185,6 +185,11 @@ p {
   backdrop-filter: blur(3px) !important;
 }
 
+.leaflet-popup-content {
+  @apply m-0! p-4;
+  width: 100% !important;
+}
+
 .leaflet-popup-tip {
   background-color: oklch(0.173 0 0 / 80%) !important;
   outline: 2px solid oklch(0.25 0 0 / 80%);
@@ -196,9 +201,9 @@ p {
 }
 
 .triangle {
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 20px solid #dfdfdf;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid #dfdfdf;
 }

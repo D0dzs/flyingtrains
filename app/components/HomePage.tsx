@@ -126,9 +126,11 @@ const HomePage = () => {
           className="hidden md:block fixed bottom-4 left-1/2 transform -translate-x-1/2 md:w-max z-9999 outline-[#333333]/80 bg-[#101010]/80 backdrop-blur-[2px]"
           variant="default"
         >
-          <AlertOctagonIcon className="stroke-red-400" />
-          <AlertTitle className="flex items-center justify-between">
-            <p className="text-red-400">Heads up!</p>
+          <AlertTitle className="flex items-center justify-between mb-2">
+            <div className="flex flex-row items-center gap-2">
+              <AlertOctagonIcon className="stroke-red-400" />
+              <p className="text-red-400">Heads up!</p>
+            </div>
             <X size={14} cursor={"pointer"} onClick={hideAlertBox} />
           </AlertTitle>
           <AlertDescription>

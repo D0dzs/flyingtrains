@@ -19,14 +19,13 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
 import "leaflet/dist/leaflet.css";
-import { cn, formatTime } from "~/lib/utils";
+import { formatTime } from "~/lib/utils";
 import { customScrollbarStyles } from "~/lib/consts";
 
 function ResizeHandler() {
@@ -149,13 +148,29 @@ const LeafletMap = ({
                           <TableRow
                             key={idx}
                             className={`${
-                              (s.rd || 0) < nowInSec ? "bg-green-500/10! transition-colors hover:bg-green-500/15!" : null
+                              (s.rd || 0) < nowInSec
+                                ? "bg-green-500/10! transition-colors hover:bg-green-500/15!"
+                                : null
                             }`}
                           >
                             <TableCell>{s.name}</TableCell>
-                            <TableCell className="text-center">{formatTime(s.sa!)}</TableCell>
-                            <TableCell className="text-center">{formatTime(s.sd!)}</TableCell>
-                            <TableCell className="text-center">{s.v ? s.v : "-"}</TableCell>
+                            <TableCell className="text-center">
+                              {formatTime(s.sa!)}
+                              <br />
+                              <span className="text-xs text-red-500">
+                                {formatTime((s.a || 0) + (s.sa || 0))}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {formatTime(s.sd!)}
+                              <br />
+                              <span className="text-xs text-red-500">
+                                {formatTime((s.sd || 0) + (s.d || 0))}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {s.v ? s.v : "-"}
+                            </TableCell>
                           </TableRow>
                         );
                       })}

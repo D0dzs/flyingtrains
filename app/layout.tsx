@@ -1,9 +1,17 @@
 import { Analytics } from "@vercel/analytics/next";
+import { BotIdClient } from "botid/client";
 
 import type { Metadata } from "next";
 import TSQueryProvider from "./components/Providers/TSQueryProvider";
 import { SidebarProvider } from "~/components/ui/sidebar";
 import "./globals.css";
+
+const ProtectedRoutes = [
+  { path: "/api/boundary", method: "GET" },
+  { path: "/api/railways/main", method: "GET" },
+  { path: "/api/railways/standard", method: "GET" },
+  { path: "/api/train-data", method: "GET" },
+];
 
 export const metadata: Metadata = {
   icons: {
@@ -18,6 +26,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <BotIdClient protect={ProtectedRoutes} />
+      </head>
       <body className={`antialiased dark select-none overflow-hidden`}>
         <TSQueryProvider>
           <SidebarProvider>

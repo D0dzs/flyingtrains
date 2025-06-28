@@ -103,16 +103,23 @@ const LeafletMap = ({
         >
           <Popup>
             <div className="text-white p-2 rounded">
-              <h3>{vehicle.name}</h3>
-              <p>Headsign: {vehicle.headsgn}</p>
-              {vehicle.delay ? (
+              <code>{vehicle.name}</code>
+              <p>Destination ➔ {vehicle.headsgn}</p>
+              <table>
+                <tr>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                </tr>
+              </table>
+              {/* {vehicle.delay ? (
                 <p>
-                  Delay:{" "}
+                  Delay ➔{" "}
                   {parseInt(vehicle.delay.toString()) > 0
                     ? vehicle.delay + " min"
                     : "No delay!"}
                 </p>
-              ) : null}
+              ) : null} */}
             </div>
           </Popup>
         </Marker>

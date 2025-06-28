@@ -25,7 +25,11 @@ export function AppSidebar({
   const minutes = Math.floor((totalDelay % 3600) / 60);
 
   const openGithubRepository = () => {
-    window.open("https://github.com/D0dzs/flyingtrains", "_blank", "noopener noreferrer");
+    window.open(
+      "https://github.com/D0dzs/flyingtrains",
+      "_blank",
+      "noopener noreferrer"
+    );
   };
 
   return (
@@ -51,13 +55,11 @@ export function AppSidebar({
               <span>
                 {lastUpdated > 0 ? (
                   <p>
-                    {new Date(lastUpdated).toLocaleString("hu-HU", {
-                      year: "numeric",
-                      month: "2-digit",
+                    {new Date(lastUpdated).toLocaleString("en-US", {
+                      month: "short",
                       day: "2-digit",
                       hour: "2-digit",
                       minute: "2-digit",
-                      second: "2-digit",
                     })}
                   </p>
                 ) : (
@@ -65,8 +67,22 @@ export function AppSidebar({
                 )}
               </span>
             </div>
-            <p className="text-xs text-gray-500 italic">
-              (Updates every 3 minutes!)
+            <p className="text-xs text-gray-300 italic">
+              (Updates every 2 minutes!)
+            </p>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex flex-row gap-2">
+              <RssIcon size={24} className="stroke-red-400" />
+              <span>{lastUpdated > 0 ? <p>Next update at:</p> : "N/A"}</span>
+            </div>
+            <p className="text-xs text-right text-gray-300 italic">
+              {new Date(lastUpdated + 120000).toLocaleString("en-US", {
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </p>
           </div>
           <div className="flex flex-row gap-2">

@@ -116,11 +116,13 @@ const LeafletMap = ({
           <Popup className="w-96">
             <div className="text-white rounded w-full" key={idx}>
               <div className="grid gap-1">
-                <code>{v.name}</code>
-                <p>Destination ➔ {v.headsgn}</p>
-                <p>Speed ➔ {Math.round((v.sp || 0) * 3.6)} km/h</p>
+                <code className="text-lg font-semibold">{v.name}</code>
+                <p className="text-violet-300">Destination ➔ {v.headsgn}</p>
+                <p className="text-emerald-300">
+                  Speed ➔ {Math.round((v.sp || 0) * 3.6)} km/h
+                </p>
                 {v.delay ? (
-                  <p className="text-muted-foreground">
+                  <p className="text-red-300">
                     Delay ➔{" "}
                     {parseInt(v.delay.toString()) > 0
                       ? v.delay + " min"
@@ -128,32 +130,35 @@ const LeafletMap = ({
                   </p>
                 ) : null}
               </div>
-              <div className="relative max-h-48 overflow-hidden" key={idx}>
+              <div
+                className="relative max-h-48 overflow-hidden mt-2 rounded"
+                key={idx}
+              >
                 <style
                   dangerouslySetInnerHTML={{ __html: customScrollbarStyles }}
                 />
                 <div className="h-48 overflow-y-auto overflow-x-hidden custom-scrollbar">
                   <Table key={idx} className="w-full">
                     <TableHeader className="sticky top-0 bg-inherit z-10">
-                      <TableRow className="*:text-center">
+                      <TableRow className="*:text-center bg-[#333]/20">
                         <TableHead>Állomás</TableHead>
                         <TableHead>Érk.</TableHead>
                         <TableHead>Ind.</TableHead>
                         <TableHead>Vágány</TableHead>
                       </TableRow>
                     </TableHeader>
-                    <TableBody key={idx}>
+                    <TableBody key={idx} className="overflow-x-hidden">
                       {v.stops.map((s, idx) => {
                         return (
                           <TableRow
                             key={idx}
                             className={`${
                               (s.rd || 0) < nowInSec
-                                ? "bg-green-500/10! transition-colors hover:bg-green-500/15!"
+                                ? "bg-green-500/15! transition-colors hover:bg-green-500/20!"
                                 : null
                             }`}
                           >
-                            <TableCell>{s.name}</TableCell>
+                            <TableCell className="text-xs">{s.name}</TableCell>
                             <TableCell className="text-center">
                               {formatTime(s.sa!)}
                               {s.sa! + s.a! > s.sa! ? (

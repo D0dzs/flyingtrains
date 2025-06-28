@@ -32,7 +32,7 @@ const AboutDialog = () => {
           to track the trains and its' positions,{" "}
           <span className="">We are not slowing down the system</span>, as we
           refresh the data{" "}
-          <code className="text-red-300 font-extrabold">every 3 minutes</code>!
+          <code className="text-red-300 font-extrabold">every 2 minutes</code>!
         </DialogDescription>
       </DialogHeader>
     </DialogContent>

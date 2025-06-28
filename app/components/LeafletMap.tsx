@@ -156,17 +156,25 @@ const LeafletMap = ({
                             <TableCell>{s.name}</TableCell>
                             <TableCell className="text-center">
                               {formatTime(s.sa!)}
-                              <br />
-                              <span className="text-xs text-red-500">
-                                {formatTime((s.a || 0) + (s.sa || 0))}
-                              </span>
+                              {s.sa! + s.a! > s.sa! ? (
+                                <>
+                                  <br />
+                                  <span className="text-xs text-red-500">
+                                    {formatTime((s.a || 0) + (s.sa || 0))}
+                                  </span>
+                                </>
+                              ) : null}
                             </TableCell>
                             <TableCell className="text-center">
                               {formatTime(s.sd!)}
-                              <br />
-                              <span className="text-xs text-red-500">
-                                {formatTime((s.sd || 0) + (s.d || 0))}
-                              </span>
+                              {s.sd! + s.d! > s.sd! ? (
+                                <>
+                                  <br />
+                                  <span className="text-xs text-red-500">
+                                    {formatTime((s.sd || 0) + (s.d || 0))}
+                                  </span>
+                                </>
+                              ) : null}
                             </TableCell>
                             <TableCell className="text-center">
                               {s.v ? s.v : "-"}

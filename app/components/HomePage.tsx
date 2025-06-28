@@ -50,7 +50,7 @@ const HomePage = () => {
         onOpenChange={handleTechnologiesDialogOpen}
         children={<TechnologiesDialog />}
       />
-      <div className="absolute md:bottom-4 top-4 right-4 z-999 p-4 outline-2 outline-[#333333]/80 bg-[#101010]/80 text-white rounded shadow-lg backdrop-blur-[2px] font-mono">
+      <div className="absolute md:bottom-4! top-4 h-fit right-4 z-999 p-4 outline-2 outline-[#333333]/80 bg-[#101010]/80 text-white rounded shadow-lg backdrop-blur-[2px] font-mono">
         <h1 className="text-center mb-2">Legend</h1>
         <div className="grid gap-1 text-xs">
           <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <div className="absolute top-0 right-0 outline-[#333333]/80 bg-[#101010]/80 py-1 px-2 rounded-[0px_0px_0px_4px] text-xs gap-1 hidden md:flex z-9999">
+      <div className="absolute bottom-0 right-0 outline-[#333333]/80 bg-[#101010]/80 py-1 px-2 rounded-[0px_0px_0px_4px] text-xs gap-1 hidden md:flex z-9999">
         <span className="flex items-center gap-1">
           <svg
             aria-hidden="true"
@@ -123,7 +123,7 @@ const HomePage = () => {
       />
       {alertBoxVisible ? (
         <Alert
-          className="hidden md:block fixed bottom-4 left-1/2 transform -translate-x-1/2 w-max z-9999 outline-[#333333]/80 bg-[#101010]/80 backdrop-blur-[2px]"
+          className="hidden md:block fixed bottom-4 left-1/2 transform -translate-x-1/2 md:w-max z-9999 outline-[#333333]/80 bg-[#101010]/80 backdrop-blur-[2px]"
           variant="default"
         >
           <AlertOctagonIcon className="stroke-red-400" />

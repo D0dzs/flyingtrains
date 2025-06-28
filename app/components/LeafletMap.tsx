@@ -84,7 +84,7 @@ const LeafletMap = ({
       scrollWheelZoom
       preferCanvas
       zoomControl={false}
-      className="ml-64!"
+      className="md:ml-64!"
     >
       {/* Handle Resize when it's happening (it should work) */}
       <ResizeHandler />

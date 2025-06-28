@@ -50,7 +50,7 @@ const HomePage = () => {
         onOpenChange={handleTechnologiesDialogOpen}
         children={<TechnologiesDialog />}
       />
-      <div className="absolute bottom-4 right-4 z-999 p-4 outline-2 outline-[#333333]/80 bg-[#101010]/80 text-white rounded shadow-lg backdrop-blur-[2px] font-mono">
+      <div className="absolute md:bottom-4 top-4 right-4 z-999 p-4 outline-2 outline-[#333333]/80 bg-[#101010]/80 text-white rounded shadow-lg backdrop-blur-[2px] font-mono">
         <h1 className="text-center mb-2">Legend</h1>
         <div className="grid gap-1 text-xs">
           <div className="flex items-center gap-2">
@@ -123,7 +123,7 @@ const HomePage = () => {
       />
       {alertBoxVisible ? (
         <Alert
-          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-max z-9999 outline-[#333333]/80 bg-[#101010]/80 backdrop-blur-[2px]"
+          className="hidden md:block fixed bottom-4 left-1/2 transform -translate-x-1/2 w-max z-9999 outline-[#333333]/80 bg-[#101010]/80 backdrop-blur-[2px]"
           variant="default"
         >
           <AlertOctagonIcon className="stroke-red-400" />

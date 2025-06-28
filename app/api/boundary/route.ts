@@ -1,10 +1,14 @@
 // app/api/railways/route.ts
+import { checkBotId } from 'botid/server';
 
 import path from "path";
 import fs from 'fs';
 import { NextRequest, NextResponse } from "next/server";
 
-export function GET(request: NextRequest) {
+export async function GET(request: NextRequest) {
+    const verification = await checkBotId();
+    if (verification.isBot) return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+
     // This GeoJSON is generated using: https://overpass-turbo.eu/
     /***
         [out:json][timeout:25];
@@ -25,7 +29,7 @@ export function GET(request: NextRequest) {
         { color:transparent; fill:transparent; fill-color:transparent; }
         }}
     */
-   
+
     const geojsonPath = path.join(process.cwd(), 'public', 'data', 'Boundary.geojson');
 
     try {

@@ -1,4 +1,5 @@
 // app/api/train-data/route.ts
+import { checkBotId } from 'botid/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 const GRAPHQL_ENDPOINT = "https://emma.mav.hu/otp2-backend/otp/routers/default/index/graphql";
@@ -123,6 +124,9 @@ async function fetchTripDetails(gtfsId: string, serviceDay: string): Promise<Tri
 }
 
 export async function GET(request: NextRequest) {
+    const verification = await checkBotId();
+    if (verification.isBot) return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+
     try {
         const serviceDay = getServiceDay();
         console.log("Fetching vehicle positions... [" + new Date().toLocaleString("hu-HU") + "]");

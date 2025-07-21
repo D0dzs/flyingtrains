@@ -93,7 +93,7 @@ const LeafletMap = ({
       <GeoJSON data={boundaryData} style={{ fill: false, color: "#cf0000" }} />
       {/* Maptiles */}
       <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
-      s{/* Trains and their positions. */}
+      {/* Trains and their positions. */}
       {trainData.vehicles.map((v: ProcessedVehicle, idx: number) => (
         <Marker
           key={v.id}

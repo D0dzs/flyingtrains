@@ -2,7 +2,7 @@
 import { checkBotId } from 'botid/server';
 import { NextRequest, NextResponse } from 'next/server';
 
-const GRAPHQL_ENDPOINT = "https://emma.mav.hu/otp2-backend/otp/routers/default/index/graphql";
+const GRAPHQL_ENDPOINT = "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql";
 
 const HEADERS = {
     "Content-Type": "application/json",

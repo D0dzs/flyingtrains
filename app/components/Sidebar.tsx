@@ -28,7 +28,7 @@ export function AppSidebar({
     window.open(
       "https://github.com/D0dzs/flyingtrains",
       "_blank",
-      "noopener noreferrer"
+      "noopener noreferrer",
     );
   };
 
@@ -69,7 +69,7 @@ export function AppSidebar({
               </span>
             </div>
             <p className="text-xs text-gray-300 italic">
-              (Updates every 2 minutes!)
+              (Updates every 30 seconds!)
             </p>
           </div>
           <div className="flex flex-col">
@@ -78,13 +78,17 @@ export function AppSidebar({
               <span>{lastUpdated > 0 ? <p>Next update at</p> : "N/A"}</span>
             </div>
             <p className="text-xs text-right text-gray-300 italic">
-              {new Date(lastUpdated + 120000).getTime() ? new Date(lastUpdated + 120000).toLocaleString("en-US", {
-                hour12: false,
-                month: "short",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-              }) : <span className="text-muted-foreground italic">Loading...</span>}
+              {new Date(lastUpdated + 120000).getTime() ? (
+                new Date(lastUpdated + 120000).toLocaleString("en-US", {
+                  hour12: false,
+                  month: "short",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              ) : (
+                <span className="text-muted-foreground italic">Loading...</span>
+              )}
             </p>
           </div>
           <div className="flex flex-row gap-2">

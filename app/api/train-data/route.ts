@@ -1,47 +1,58 @@
 // app/api/train-data/route.ts
-import { checkBotId } from 'botid/server';
-import { NextRequest, NextResponse } from 'next/server';
+import { checkBotId } from "botid/server";
+import { NextRequest, NextResponse } from "next/server";
 
-const GRAPHQL_ENDPOINT = "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql";
+const GRAPHQL_ENDPOINT =
+  "https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql";
 
 const HEADERS = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
+  Accept: "*/*",
+  "Accept-Encoding": "gzip, deflate, br, zstd",
+  "Accept-Language": "en-US,en;q=0.7",
+  Connection: "keep-alive",
+  "Content-Type": "application/json",
+  "Sec-Fetch-Dest": "empty",
+  "Sec-Fetch-Mode": "cors",
+  "Sec-Fetch-Site": "same-origin",
+  "Sec-GPC": "1",
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Cortana 1.14.0.19041; 10.0.0.0.19042.746) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19042",
+  "sec-ch-ua": '"Not)A;Brand";v="8", "Chromium";v="138"',
+  "sec-ch-ua-mobile": "?0",
+  "sec-ch-ua-platform": '"Windows"',
 };
 
 function getServiceDay(): string {
-    const now = new Date();
-    return now.toISOString().split('T')[0]; // YYYY-MM-DD format
+  const now = new Date();
+  return now.toISOString().split("T")[0]; // YYYY-MM-DD format
 }
 
 function delayColor(min: number) {
-    if (min >= 90) return 'bg-red-950'; // 90+ minutes
-    if (min >= 60) return 'bg-red-500';
-    if (min >= 15) return 'bg-orange-500';
-    if (min >= 5) return 'bg-yellow-500';
-    return 'bg-lime-500';
+  if (min >= 90) return "bg-red-950"; // 90+ minutes
+  if (min >= 60) return "bg-red-500";
+  if (min >= 15) return "bg-orange-500";
+  if (min >= 5) return "bg-yellow-500";
+  return "bg-lime-500";
 }
-
 
 const now = new Date();
 const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
 
 function getCurrentDelay(stops: CompressedStop[], now: number) {
-    for (const stop of stops) {
-        const arrivalTime = stop.ra; // realtimeArrival in seconds since midnight
-        if (arrivalTime! > now) {
-            return stop.a || stop.d || 0; // Prefer arrival delay, fallback to departure
-        }
+  for (const stop of stops) {
+    const arrivalTime = stop.ra; // realtimeArrival in seconds since midnight
+    if (arrivalTime! > now) {
+      return stop.a || stop.d || 0; // Prefer arrival delay, fallback to departure
     }
+  }
 
-    // Fallback: use last known stop
-    const lastStop = stops[stops.length - 1];
-    return lastStop ? (lastStop.a || lastStop.d || 0) : 0;
+  // Fallback: use last known stop
+  const lastStop = stops[stops.length - 1];
+  return lastStop ? lastStop.a || lastStop.d || 0 : 0;
 }
 
-
 async function fetchVehiclePositions(): Promise<VehiclePosition[]> {
-    const query = `
+  const query = `
     {
       vehiclePositions(
         swLat: 45.5,
@@ -65,22 +76,25 @@ async function fetchVehiclePositions(): Promise<VehiclePosition[]> {
     }
   `;
 
-    const response = await fetch(GRAPHQL_ENDPOINT, {
-        method: 'POST',
-        headers: HEADERS,
-        body: JSON.stringify({ query }),
-    });
+  const response = await fetch(GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: HEADERS,
+    body: JSON.stringify({ query }),
+  });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
 
-    const data: VehiclePositionsResponse = await response.json();
-    return data.data.vehiclePositions;
+  const data: VehiclePositionsResponse = await response.json();
+  return data.data.vehiclePositions;
 }
 
-async function fetchTripDetails(gtfsId: string, serviceDay: string): Promise<TripDetails> {
-    const query = `
+async function fetchTripDetails(
+  gtfsId: string,
+  serviceDay: string
+): Promise<TripDetails> {
+  const query = `
     {
       trip(id: "${gtfsId}", serviceDay: "${serviceDay}") {
         gtfsId
@@ -109,118 +123,122 @@ async function fetchTripDetails(gtfsId: string, serviceDay: string): Promise<Tri
     }
   `;
 
-    const response = await fetch(GRAPHQL_ENDPOINT, {
-        method: 'POST',
-        headers: HEADERS,
-        body: JSON.stringify({ query }),
-    });
+  const response = await fetch(GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: HEADERS,
+    body: JSON.stringify({ query }),
+  });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
 
-    const data: TripDetailsResponse = await response.json();
-    return data.data?.trip || {};
+  const data: TripDetailsResponse = await response.json();
+  return data.data?.trip || {};
 }
 
 export async function GET(request: NextRequest) {
-    const verification = await checkBotId();
-    if (verification.isBot) return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+  const verification = await checkBotId();
+  if (verification.isBot)
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
 
-    try {
-        const serviceDay = getServiceDay();
-        console.log("Fetching vehicle positions... [" + new Date().toLocaleString("hu-HU") + "]");
+  try {
+    const serviceDay = getServiceDay();
+    console.log(
+      "Fetching vehicle positions... [" +
+        new Date().toLocaleString("hu-HU") +
+        "]"
+    );
 
-        const vehicles = await fetchVehiclePositions();
+    const vehicles = await fetchVehiclePositions();
 
-        const allData: ApiResponse = {
-            lastUpdated: Date.now(),
-            totalDelay: 0,
-            vehicles: []
-        };
+    const allData: ApiResponse = {
+      lastUpdated: Date.now(),
+      totalDelay: 0,
+      vehicles: [],
+    };
 
-        // Process each vehicle
-        for (const vehicle of vehicles) {
-            const trip = vehicle.trip;
-            const gtfsId = trip?.gtfsId;
+    // Process each vehicle
+    for (const vehicle of vehicles) {
+      const trip = vehicle.trip;
+      const gtfsId = trip?.gtfsId;
 
-            if (gtfsId) {
-                try {
-                    const tripDetails = await fetchTripDetails(gtfsId, serviceDay);
+      if (gtfsId) {
+        try {
+          const tripDetails = await fetchTripDetails(gtfsId, serviceDay);
 
-                    const tripShortName = trip?.tripShortName;
-                    const tripHeadsign = trip?.tripHeadsign;
-                    const vehicleId = vehicle.vehicleId;
-                    const lat = vehicle.lat;
-                    const lon = vehicle.lon;
-                    const label = vehicle.label;
-                    const speed = vehicle.speed;
-                    const heading = vehicle.heading;
-                    const trainCat = tripDetails.trainCategoryName;
-                    const trainName = tripDetails.trainName;
-                    const routeLongName = tripDetails.route?.longName;
-                    const routeShortName = tripDetails.route?.shortName;
-                    const stopTimes = tripDetails.stoptimes || [];
+          const tripShortName = trip?.tripShortName;
+          const tripHeadsign = trip?.tripHeadsign;
+          const vehicleId = vehicle.vehicleId;
+          const lat = vehicle.lat;
+          const lon = vehicle.lon;
+          const label = vehicle.label;
+          const speed = vehicle.speed;
+          const heading = vehicle.heading;
+          const trainCat = tripDetails.trainCategoryName;
+          const trainName = tripDetails.trainName;
+          const routeLongName = tripDetails.route?.longName;
+          const routeShortName = tripDetails.route?.shortName;
+          const stopTimes = tripDetails.stoptimes || [];
 
-                    // Compress stop data
-                    const stopsCompressed: CompressedStop[] = stopTimes.map(stop => {
-                        const st = stop.stop;
-                        return {
-                            name: st?.name,
-                            ra: stop.realtimeArrival,
-                            rd: stop.realtimeDeparture,
-                            sa: stop.scheduledArrival,
-                            sd: stop.scheduledDeparture,
-                            a: stop.arrivalDelay,
-                            d: stop.departureDelay,
-                            v: st?.platformCode
-                        };
-                    });
+          // Compress stop data
+          const stopsCompressed: CompressedStop[] = stopTimes.map((stop) => {
+            const st = stop.stop;
+            return {
+              name: st?.name,
+              ra: stop.realtimeArrival,
+              rd: stop.realtimeDeparture,
+              sa: stop.scheduledArrival,
+              sd: stop.scheduledDeparture,
+              a: stop.arrivalDelay,
+              d: stop.departureDelay,
+              v: st?.platformCode,
+            };
+          });
 
-                    // Determine name
-                    let name = tripShortName;
-                    if (routeLongName && routeLongName.length < 6) {
-                        name = `[${routeLongName}] ${tripShortName}`;
-                    }
+          // Determine name
+          let name = tripShortName;
+          if (routeLongName && routeLongName.length < 6) {
+            name = `[${routeLongName}] ${tripShortName}`;
+          }
 
-                    const delayInSec = getCurrentDelay(stopsCompressed, nowSec);
+          const delayInSec = getCurrentDelay(stopsCompressed, nowSec);
 
-                    allData.totalDelay += delayInSec;
-                    const delayInMin = Math.floor(delayInSec / 60);
-                    const delayCategory = delayColor(delayInMin);
+          allData.totalDelay += delayInSec;
+          const delayInMin = Math.floor(delayInSec / 60);
+          const delayCategory = delayColor(delayInMin);
 
-                    allData.vehicles.push({
-                        id: gtfsId,
-                        name: name,
-                        headsgn: tripHeadsign,
-                        lat: lat,
-                        lon: lon,
-                        sp: speed,
-                        hd: heading,
-                        stops: stopsCompressed,
-                        delay: delayInMin,
-                        delayColor: delayCategory
-                    });
-                } catch (error) {
-                    console.error(`Error fetching trip details for ${gtfsId}:`, error);
-                    // Continue with next vehicle even if one fails
-                }
-            }
+          allData.vehicles.push({
+            id: gtfsId,
+            name: name,
+            headsgn: tripHeadsign,
+            lat: lat,
+            lon: lon,
+            sp: speed,
+            hd: heading,
+            stops: stopsCompressed,
+            delay: delayInMin,
+            delayColor: delayCategory,
+          });
+        } catch (error) {
+          console.error(`Error fetching trip details for ${gtfsId}:`, error);
+          // Continue with next vehicle even if one fails
         }
-
-        return NextResponse.json(allData, {
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
-            }
-        });
-
-    } catch (error) {
-        console.error('Error fetching train data:', error);
-        return NextResponse.json(
-            { error: 'Failed to fetch train data' },
-            { status: 500 }
-        );
+      }
     }
+
+    return NextResponse.json(allData, {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching train data:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch train data" },
+      { status: 500 }
+    );
+  }
 }
